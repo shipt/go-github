@@ -212,8 +212,8 @@ func TestRepositoriesService_GetCommitSHA1(t *testing.T) {
 		w.WriteHeader(http.StatusNotModified)
 	})
 
-	got, _, err = client.Repositories.GetCommitSHA1(context.Background(), "o", "r", "tag", sha1)
-	if err == nil {
+	got, resp, err := client.Repositories.GetCommitSHA1(context.Background(), "o", "r", "tag", sha1)
+	if err == nil || resp.StatusCode != http.StatusNotModified {
 		t.Errorf("Expected HTTP 304 response")
 	}
 
