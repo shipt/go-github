@@ -46,6 +46,9 @@ type DeploymentRequest struct {
 // DeploymentsListOptions specifies the optional parameters to the
 // RepositoriesService.ListDeployments method.
 type DeploymentsListOptions struct {
+	// ETag to use in `If-None-Match` header field. (Helps reduce GitHub API rate limiting.)
+	ETag string `url:"-"`
+
 	// SHA of the Deployment.
 	SHA string `url:"sha,omitempty"`
 
@@ -74,6 +77,10 @@ func (s *RepositoriesService) ListDeployments(ctx context.Context, owner, repo s
 	req, err := s.client.NewRequest("GET", u, nil)
 	if err != nil {
 		return nil, nil, err
+	}
+
+	if opts.ETag != "" {
+		req.Header.Set("If-None-Match", opts.ETag)
 	}
 
 	var deployments []*Deployment
