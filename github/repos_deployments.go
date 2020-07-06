@@ -79,7 +79,7 @@ func (s *RepositoriesService) ListDeployments(ctx context.Context, owner, repo s
 		return nil, nil, err
 	}
 
-	if opts.ETag != "" {
+	if opts != nil && opts.ETag != "" {
 		req.Header.Set("If-None-Match", opts.ETag)
 	}
 
